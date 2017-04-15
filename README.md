@@ -8,4 +8,4 @@ Usage | URL | Example
 --- | --- | ---
 List all courses | cp-catalog.herokuapp.com/course | 
 List specific course | cp-catalog.herokuapp.com/course/{prefix}{suffix} | http://cp-catalog.herokuapp.com/course/cpe357
-List all courses by prefix | cp-catalog.herokuapp.com/course/prefix/{prefix} | http://cp-catalog.herokuapp.com/course/prefix/cpe
+List all courses with specific prefix | cp-catalog.herokuapp.com/course/prefix/{prefix} | http://cp-catalog.herokuapp.com/course/prefix/cpe
