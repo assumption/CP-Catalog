@@ -1,9 +1,6 @@
 package base.course;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Course {
@@ -12,22 +9,33 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    private String prefix;
+    private String suffix;
     private String title;
     private String units;
+    @Column(columnDefinition = "TEXT")
     private String prerequisites;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String termsOffered;
 
     public Course() {
     }
 
-    // Getters
     public Long getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public String getSuffix() {
+        return suffix;
     }
 
     public String getTitle() {
@@ -50,13 +58,20 @@ public class Course {
         return termsOffered;
     }
 
-    // Setters
     public void setId(Long id) {
         this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 
     public void setTitle(String title) {

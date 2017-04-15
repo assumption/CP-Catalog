@@ -19,14 +19,16 @@ public class CourseController {
         return courses;
     }
 
-    @PostMapping("search")
-    public Course findCourse(@RequestBody Course input) {
-        return courseRepository.findByName(input.getName());
+    @GetMapping("{name}")
+    public Course find(@PathVariable String name) {
+        return courseRepository.findByName(name.toUpperCase());
     }
 
-    @GetMapping("{id}")
-    public Course find(@PathVariable Long id) {
-        return courseRepository.findOne(id);
+    @GetMapping("/prefix/{prefix}")
+    public ArrayList<Course> listAllPrefix(@PathVariable String prefix) {
+        ArrayList<Course> courses = new ArrayList<>();
+        courseRepository.findByPrefix(prefix.toUpperCase()).forEach(course -> courses.add(course));
+        return courses;
     }
 
 }

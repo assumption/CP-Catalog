@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,7 +53,10 @@ public class CatalogParser {
             Elements courseElements = doc.select(COURSE_CLASS);
             for (Element courseElement : courseElements) {
                 Course course = new Course();
-                course.setName(extractCourseName(courseElement));
+                String[] courseName = extractCourseName(courseElement);
+                course.setName(courseName[0] + courseName[1]);
+                course.setPrefix(courseName[0]);
+                course.setSuffix(courseName[1]);
                 course.setTitle(extractCourseTitle(courseElement));
                 course.setUnits(extractCourseUnits(courseElement));
                 course.setPrerequisites(extractCoursePrerequisites(courseElement));
@@ -68,11 +72,10 @@ public class CatalogParser {
         return courses;
     }
 
-    private String extractCourseName(Element courseElement) {
+    private String[] extractCourseName(Element courseElement) {
         Elements nameElement = courseElement.select(COURSE_TITLE_CLASS).select("strong");
 
-        String courseName = nameElement.text().split("[/^(.*?)./]")[0];
-        courseName = courseName.replace("\u00a0", "");
+        String[] courseName = nameElement.text().split("[/^(.*?)./]")[0].split("\u00a0");
 
         return courseName;
     }
@@ -98,11 +101,10 @@ public class CatalogParser {
 
         String coursePrerequisites;
         if (preElement.size() == 0) {
-            coursePrerequisites = "None.";
+            coursePrerequisites = "";
         } else {
             coursePrerequisites = preElement.text();
         }
-        coursePrerequisites = coursePrerequisites.substring(0, Math.min(coursePrerequisites.length(), 255));
 
         return coursePrerequisites;
     }
@@ -111,7 +113,6 @@ public class CatalogParser {
         Elements descElement = courseElement.select("div").get(2).select("p");
 
         String courseDescription = descElement.text();
-        courseDescription = courseDescription.substring(0, Math.min(courseDescription.length(), 255));
 
         return courseDescription;
     }
@@ -121,10 +122,10 @@ public class CatalogParser {
 
         String courseTermsOffered;
         if (offElement.size() == 0) {
-            courseTermsOffered = "N/A";
+            courseTermsOffered = "";
         } else {
             courseTermsOffered = offElement.text();
-            courseTermsOffered = courseTermsOffered.substring(TERMS_SEARCH.length(), Math.min(courseTermsOffered.length(), 255));
+            courseTermsOffered = courseTermsOffered.substring(TERMS_SEARCH.length(), courseTermsOffered.length());
         }
 
         return courseTermsOffered;
