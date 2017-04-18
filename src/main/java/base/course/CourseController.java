@@ -1,6 +1,8 @@
 package base.course;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,22 +18,38 @@ public class CourseController {
     private CourseRepository courseRepository;
 
     @GetMapping
-    public ArrayList<Course> listAll() {
+    public ResponseEntity<ArrayList<Course>> listAll() {
         ArrayList<Course> courses = new ArrayList<>();
         courseRepository.findAll().forEach(course -> courses.add(course));
-        return courses;
+
+        if (courses.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(courses, HttpStatus.OK);
+        }
     }
 
     @GetMapping("{name}")
-    public Course find(@PathVariable String name) {
-        return courseRepository.findByName(name.toUpperCase());
+    public ResponseEntity<Course> find(@PathVariable String name) {
+        Course course = courseRepository.findByName(name.toUpperCase());
+
+        if (course == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(course, HttpStatus.OK);
+        }
     }
 
     @GetMapping("/prefix/{prefix}")
-    public ArrayList<Course> listAllPrefix(@PathVariable String prefix) {
+    public ResponseEntity<ArrayList<Course>> listAllPrefix(@PathVariable String prefix) {
         ArrayList<Course> courses = new ArrayList<>();
         courseRepository.findByPrefix(prefix.toUpperCase()).forEach(course -> courses.add(course));
-        return courses;
+
+        if (courses.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(courses, HttpStatus.OK);
+        }
     }
 
 }
