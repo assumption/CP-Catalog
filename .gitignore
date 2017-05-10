@@ -1,3 +1,8 @@
+*.iml
+
+mvnw
+mvnw.*
+
 git pu*.class
 
 # Mobile Tools for Java (J2ME)
